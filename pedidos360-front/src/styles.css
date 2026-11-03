@@ -1,0 +1,7 @@
+/* Estilos globales */
+body {
+  font-family: system-ui, Arial, sans-serif;
+  margin: 2rem;
+  background-color: #f7f7f9;
+  color: #1a1a1a;
+}
