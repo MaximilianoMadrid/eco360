@@ -9,23 +9,23 @@
 
 export const appEnv = {
   // Cognito -> User pools -> tu user pool -> "User pool ID"
-  userPoolId: '<USER_POOL_ID>',
+  userPoolId: 'us-east-1_IxZrBeOoF',
 
   // Cognito -> App clients -> tu app client (publico, SIN client secret)
-  userPoolClientId: '<APP_CLIENT_ID>',
+  userPoolClientId: '2n3j0lvgbeqfbclq12hn5bogff',
 
   // Cognito -> Branding -> Domain. Solo el host, sin "https://".
   // Ej: 'pedidos360-dev.auth.us-east-1.amazoncognito.com'
-  cognitoDomain: '<COGNITO_DOMAIN>',
+  cognitoDomain: 'us-east-1ixzrbeoof.auth.us-east-1.amazoncognito.com',
 
   // Resource server + scope creados en el paso 9 de la guia.
   // Formato: '<RESOURCE_SERVER_IDENTIFIER>/<SCOPE_NAME>'
   // Ej: 'pedidos360-api/pedidos-api-read'
-  customScope: '<CUSTOM_SCOPE>',
+  customScope: 'rs-api-pedidos/pedidos-read',
 
   // URL del stage de API Gateway (paso 5), sin slash final.
   // Ej: 'https://abc123xyz.execute-api.us-east-1.amazonaws.com/test'
-  apiGatewayBaseUrl: '<URL_API_GATEWAY>',
+  apiGatewayBaseUrl: 'https://cw08s1ilad.execute-api.us-east-1.amazonaws.com/test',
 
   // Ruta completa que consume el PedidosService (apiGatewayBaseUrl + recurso).
   get pedidosEndpoint(): string {
