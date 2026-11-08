@@ -1,0 +1,70 @@
+main {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #1f7a4d;
+  margin-bottom: 0.1rem;
+}
+
+.tagline {
+  color: #5a6b63;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+section {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: 3px solid #1f7a4d;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.token code {
+  display: block;
+  word-break: break-all;
+  background: #f0f0f0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.error {
+  color: #b00020;
+}
+
+button {
+  margin-right: 0.5rem;
+  cursor: pointer;
+  background: #1f7a4d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+button:disabled {
+  background: #a9b8b1;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #175c3a;
+}
