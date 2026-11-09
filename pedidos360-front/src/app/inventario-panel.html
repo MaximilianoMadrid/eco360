@@ -1,0 +1,157 @@
+
+<section class="inventario-panel">
+  <header>
+    <h2>Gestión de inventario</h2>
+    <p>Administra los materiales disponibles en Eco360.</p>
+
+    <button type="button"
+            (click)="actualizar()"
+            [disabled]="inventario.cargando()">
+      Actualizar inventario
+    </button>
+  </header>
+
+  <hr>
+
+  <h3>Agregar material</h3>
+
+  <form (ngSubmit)="agregar()">
+    <div>
+      <label for="producto">Nombre del material</label>
+      <input
+        id="producto"
+        name="producto"
+        type="text"
+        placeholder="Ejemplo: Cartón"
+        [ngModel]="nuevoMaterial()"
+        (ngModelChange)="nuevoMaterial.set($event)"
+        required>
+    </div>
+
+    <div>
+      <label for="stock">Cantidad disponible</label>
+      <input
+        id="stock"
+        name="stock"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="Ejemplo: 100"
+        [ngModel]="nuevoStock()"
+        (ngModelChange)="nuevoStock.set($event)"
+        required>
+    </div>
+
+    <div>
+      <label for="unidad">Unidad</label>
+      <select
+        id="unidad"
+        name="unidad"
+        [ngModel]="nuevaUnidad()"
+        (ngModelChange)="nuevaUnidad.set($event)">
+        <option value="kg">Kilogramos (kg)</option>
+        <option value="unidad">Unidades</option>
+        <option value="litros">Litros</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="ocupado()">
+      Agregar material
+    </button>
+  </form>
+
+  <hr>
+
+  <h3>Materiales registrados</h3>
+
+  @if (inventario.cargando()) {
+    <p>Cargando inventario...</p>
+  }
+
+  @if (inventario.error()) {
+    <p role="alert">{{ inventario.error() }}</p>
+  }
+
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+
+  @if (!inventario.cargando() && !inventario.error()) {
+    @if (inventario.productos().length === 0) {
+      <p>No hay materiales registrados.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Material</th>
+            <th>Stock</th>
+            <th>Unidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of inventario.productos(); track item.id) {
+            <tr>
+              <td>{{ item.id }}</td>
+              <td>{{ item.producto }}</td>
+
+              @if (editandoId() === item.id) {
+                <td>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    [ngModel]="editStock()"
+                    (ngModelChange)="editStock.set($event)">
+                </td>
+
+                <td>
+                  <select
+                    [ngModel]="editUnidad()"
+                    (ngModelChange)="editUnidad.set($event)">
+                    <option value="kg">kg</option>
+                    <option value="unidad">unidad</option>
+                    <option value="litros">litros</option>
+                  </select>
+                </td>
+
+                <td>
+                  <button type="button"
+                          (click)="guardar(item)"
+                          [disabled]="ocupado()">
+                    Guardar
+                  </button>
+
+                  <button type="button"
+                          (click)="cancelarEdicion()"
+                          [disabled]="ocupado()">
+                    Cancelar
+                  </button>
+                </td>
+              } @else {
+                <td>{{ item.stock }}</td>
+                <td>{{ item.unidad }}</td>
+
+                <td>
+                  <button type="button"
+                          (click)="editar(item)"
+                          [disabled]="ocupado()">
+                    Editar
+                  </button>
+
+                  <button type="button"
+                          (click)="eliminar(item)"
+                          [disabled]="ocupado()">
+                    Eliminar
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</section>

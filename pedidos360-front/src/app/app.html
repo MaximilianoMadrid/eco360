@@ -1,65 +1,68 @@
-<main>
-  <h1>Eco360</h1>
-  <p class="tagline">Gestión y logística de retiro de material reciclado</p>
 
-  <!-- Paso 15: botones de login / sesion / logout. Mostrar el token aqui
-       sirve solo con fines pedagogicos para el checkpoint de la guia; no
-       es una recomendacion de UX productiva. -->
+<main>
+  <header>
+    <h1>Eco360</h1>
+    <p class="tagline">
+      Gestión y logística de retiro de material reciclado
+    </p>
+  </header>
+
   <section class="sesion">
-    <h2>Sesion</h2>
+    <h2>Sesión</h2>
 
     @if (verificandoSesion) {
-      <p>Verificando sesion...</p>
+      <p>Verificando sesión...</p>
     } @else if (autenticado) {
-      <p>Conectado como: <strong>{{ usuario }}</strong></p>
-      <p class="token">Access Token: <code>{{ token }}</code></p>
-      <button (click)="logout()">Cerrar sesion</button>
+      <p>
+        Conectado como:
+        <strong>{{ usuario }}</strong>
+      </p>
+
+      <button type="button" (click)="logout()">
+        Cerrar sesión
+      </button>
     } @else {
-      <p>No hay una sesion activa.</p>
-      <button (click)="login()">Iniciar sesion</button>
-    }
+      <p>No hay una sesión activa.</p>
 
-    <button (click)="verSesion()">Ver sesion</button>
-  </section>
-
-  <!-- Pasos 16-18: consumo de la API protegida -->
-  <section class="pedidos">
-    <h2>Pedidos</h2>
-    <button (click)="consultarPedidos()" [disabled]="!autenticado">
-      Consultar pedidos
-    </button>
-
-    @if (!autenticado) {
-      <p><em>Inicia sesion para poder consultar la API.</em></p>
-    }
-
-    @if (cargandoPedidos) {
-      <p>Cargando pedidos...</p>
-    }
-
-    @if (errorPedidos) {
-      <p class="error">{{ errorPedidos }}</p>
-    }
-
-    @if (pedidos.length > 0) {
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Producto</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (pedido of pedidos; track pedido.id) {
-            <tr>
-              <td>{{ pedido.id }}</td>
-              <td>{{ pedido.producto }}</td>
-              <td>{{ pedido.estado }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      <button type="button" (click)="login()">
+        Iniciar sesión
+      </button>
     }
   </section>
+
+  @if (autenticado) {
+    <nav aria-label="Secciones de Eco360">
+      <button
+        type="button"
+        (click)="cambiarSeccion('pedidos')"
+        [attr.aria-pressed]="seccionActiva === 'pedidos'"
+      >
+        Pedidos
+      </button>
+
+      <button
+        type="button"
+        (click)="cambiarSeccion('inventario')"
+        [attr.aria-pressed]="seccionActiva === 'inventario'"
+      >
+        Inventario
+      </button>
+    </nav>
+
+    @if (seccionActiva === 'pedidos') {
+      <app-pedidos-panel />
+    }
+
+    @if (seccionActiva === 'inventario') {
+      <app-inventario-panel />
+    }
+
+  } @else if (!verificandoSesion) {
+    <section>
+      <p>
+        Inicia sesión para acceder a la gestión
+        de pedidos e inventario.
+      </p>
+    </section>
+  }
 </main>

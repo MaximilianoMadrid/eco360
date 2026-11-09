@@ -1,70 +1,161 @@
-main {
-  max-width: 720px;
-  margin: 0 auto;
+
+/* ========================================
+   ECO360 - ESTRUCTURA PRINCIPAL
+   ======================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
 }
 
-h1 {
-  color: #1f7a4d;
-  margin-bottom: 0.1rem;
+/* Contenedor principal */
+main {
+  width: min(95%, 1250px);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+/* Encabezado */
+header {
+  background: linear-gradient(
+    135deg,
+    #176b42 0%,
+    #24935c 100%
+  );
+  color: white;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 24px rgba(22, 90, 55, 0.12);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: white;
 }
 
 .tagline {
-  color: #5a6b63;
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  color: #e2f4e8;
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
 }
 
-section {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-top: 3px solid #1f7a4d;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
+/* Sección de sesión */
+.sesion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  background: white;
+  border: 1px solid #e0ebe3;
+  border-radius: 14px;
+  padding: 1.2rem 1.8rem;
   margin-bottom: 1.5rem;
+
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
 }
 
-.token code {
+.sesion h2 {
+  margin: 0;
+  color: #176b42;
+}
+
+.sesion p {
+  margin: 0;
+}
+
+.sesion strong {
+  color: #176b42;
+}
+
+.sesion button {
+  background: #eef5f0;
+  color: #176b42;
+  border: 1px solid #c9dfd0;
+}
+
+.sesion button:hover:not(:disabled) {
+  background: #dceee2;
+}
+
+/* Navegación principal */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+
+  background: white;
+  border: 1px solid #e0ebe3;
+  border-radius: 14px;
+}
+
+nav button {
+  flex: 1;
+  min-width: 140px;
+  background: transparent;
+  color: #52715d;
+  border-radius: 10px;
+  padding: 0.9rem 1.5rem;
+  font-weight: 700;
+}
+
+nav button:hover:not(:disabled) {
+  background: #e9f4ec;
+  color: #176b42;
+}
+
+nav button[aria-pressed="true"] {
+  background: #218454;
+  color: white;
+}
+
+nav button[aria-pressed="true"]:hover {
+  background: #176b42;
+}
+
+/* Paneles principales */
+app-pedidos-panel,
+app-inventario-panel {
   display: block;
-  word-break: break-all;
-  background: #f0f0f0;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  background: white;
+  border: 1px solid #e0ebe3;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  main {
+    width: 94%;
+    padding-top: 1rem;
+  }
 
-th, td {
-  text-align: left;
-  padding: 0.5rem;
-  border-bottom: 1px solid #eee;
-}
+  header {
+    padding: 1.5rem;
+  }
 
-.error {
-  color: #b00020;
-}
+  header h1 {
+    font-size: 1.9rem;
+  }
 
-button {
-  margin-right: 0.5rem;
-  cursor: pointer;
-  background: #1f7a4d;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
+  .sesion {
+    padding: 1rem;
+  }
 
-button:disabled {
-  background: #a9b8b1;
-  cursor: not-allowed;
-}
+  nav button {
+    min-width: 110px;
+  }
 
-button:hover:not(:disabled) {
-  background: #175c3a;
+  app-pedidos-panel,
+  app-inventario-panel {
+    padding: 1rem;
+  }
 }
