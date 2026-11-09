@@ -37,6 +37,8 @@ public class SecurityConfig {
                     .hasAuthority(SCOPE_ESCRITURA)
                 .requestMatchers(HttpMethod.DELETE, "/api/pedidos/**")
                     .hasAuthority(SCOPE_ESCRITURA)
+                .requestMatchers("/api/rabbit-admin/**")
+                    .hasAuthority(SCOPE_ESCRITURA)
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

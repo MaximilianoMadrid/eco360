@@ -11,6 +11,7 @@ import cl.duoc.eco360.pedidos.dto.PedidoRequest;
 import cl.duoc.eco360.pedidos.exception.ApiException;
 import cl.duoc.eco360.pedidos.model.EstadoPedido;
 import cl.duoc.eco360.pedidos.model.Pedido;
+import cl.duoc.eco360.pedidos.messaging.PedidosProducer;
 import cl.duoc.eco360.pedidos.repository.PedidoRepository;
 
 @Service
@@ -18,8 +19,11 @@ public class PedidoService {
 
     private final PedidoRepository repository;
     private final InventarioClient inventario;
+    private final PedidosProducer pedidosProducer;
 
-    public PedidoService(PedidoRepository repository, InventarioClient inventario) {
+    public PedidoService(PedidoRepository repository, InventarioClient inventario,
+        PedidosProducer pedidosProducer) {
+        this.pedidosProducer = pedidosProducer;
         this.repository = repository;
         this.inventario = inventario;
     }
@@ -42,13 +46,39 @@ public class PedidoService {
         String producto = request.producto().trim();
         int cantidad = request.cantidad();
 
+        // 1. Reservar stock
         inventario.reservar(producto, cantidad);
+
+        Pedido pedido;
+
         try {
-            return repository.save(new Pedido(producto, cantidad, EstadoPedido.EN_CLASIFICACION));
+        // 2. Guardar pedido en base de datos
+            pedido = repository.save(
+                new Pedido(producto, cantidad, EstadoPedido.EN_CLASIFICACION)
+            );
+
         } catch (RuntimeException e) {
+        // Si falla el guardado, devolver stock
             inventario.liberar(producto, cantidad);
             throw e;
         }
+
+         // 3. Publicar evento en RabbitMQ
+        try {
+        pedidosProducer.publicarPedidoCreado(
+                pedido.getId(),
+                pedido.getProducto(),
+                pedido.getCantidad()
+            );
+        } catch (RuntimeException e) {
+        // El pedido ya fue guardado: no revertir stock ni simular que no existe
+            System.err.println(
+                "[RabbitMQ] Error al publicar evento del pedido "
+                + pedido.getId() + ": " + e.getMessage()
+            );
+        }
+
+        return pedido;
     }
 
     // Aplica la regla de transiciones. Al cancelar, el stock vuelve a inventario.
