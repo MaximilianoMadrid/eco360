@@ -1,4 +1,4 @@
-package cl.duoc.eco360.pedidos.admin.dto;
+package cl.duoc.eco360.rabbitadmin.admin.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

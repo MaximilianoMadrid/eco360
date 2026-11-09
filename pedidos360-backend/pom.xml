@@ -21,6 +21,7 @@
     <modules>
         <module>ms-pedidos</module>
         <module>ms-inventario</module>
+		<module>ms-rabbit-admin</module>
     </modules>
 
 </project>

@@ -1,6 +1,6 @@
-package cl.duoc.eco360.pedidos.admin;
+package cl.duoc.eco360.rabbitadmin.admin;
 
-import cl.duoc.eco360.pedidos.admin.dto.*;
+import cl.duoc.eco360.rabbitadmin.admin.dto.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;

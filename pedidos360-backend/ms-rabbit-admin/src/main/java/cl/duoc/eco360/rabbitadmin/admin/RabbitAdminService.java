@@ -1,6 +1,6 @@
-package cl.duoc.eco360.pedidos.admin;
+package cl.duoc.eco360.rabbitadmin.admin;
 
-import cl.duoc.eco360.pedidos.admin.dto.BindingRequest;
+import cl.duoc.eco360.rabbitadmin.admin.dto.BindingRequest;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
