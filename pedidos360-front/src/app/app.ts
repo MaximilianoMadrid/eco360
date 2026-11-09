@@ -1,86 +1,79 @@
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import {
   signInWithRedirect,
   signOut,
   fetchAuthSession,
   getCurrentUser,
 } from 'aws-amplify/auth';
-import { PedidosService, Pedido } from './pedidos';
+
+import { PedidosPanel } from './pedidos-panel';
+import { InventarioPanel } from './inventario-panel';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    PedidosPanel,
+    InventarioPanel,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App implements OnInit {
-  // --- Sesion (paso 15) ---
   usuario = '';
-  token = '';
   autenticado = false;
   verificandoSesion = true;
 
-  // --- Pedidos (pasos 16-18) ---
-  pedidos: Pedido[] = [];
-  cargandoPedidos = false;
-  errorPedidos = '';
-
-  constructor(private pedidosService: PedidosService) {}
+  seccionActiva: 'pedidos' | 'inventario' = 'pedidos';
 
   ngOnInit(): void {
-    // Al cargar la app, revisamos si ya existe una sesion activa (por
-    // ejemplo, volvemos del redirect de Cognito tras hacer login).
     this.verSesion();
   }
 
-  async login() {
+  async login(): Promise<void> {
     await signInWithRedirect();
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     await signOut();
+
     this.usuario = '';
-    this.token = '';
     this.autenticado = false;
-    this.pedidos = [];
+    this.seccionActiva = 'pedidos';
   }
 
-  async verSesion() {
+  async verSesion(): Promise<void> {
     this.verificandoSesion = true;
+
     try {
       const user = await getCurrentUser();
       const session = await fetchAuthSession();
+
+      if (!session.tokens?.accessToken) {
+        throw new Error('No existe un token de acceso');
+      }
+
       this.usuario = user.username;
-      this.token = session.tokens?.accessToken?.toString() ?? '';
       this.autenticado = true;
-      console.log('Usuario:', user);
-      console.log('Access Token:', this.token);
+
+      console.log('Sesión autenticada correctamente');
     } catch (error) {
-      console.log('No existe sesion', error);
+      console.log('No existe una sesión activa');
+
+      this.usuario = '';
       this.autenticado = false;
     } finally {
       this.verificandoSesion = false;
     }
   }
 
-  // Paso 18.3: el componente ya no necesita tocar el token manualmente,
-  // el interceptor lo agrega solo. Usa el PedidosService (paso 17), que
-  // internamente llama a API Gateway.
-  consultarPedidos() {
-    this.cargandoPedidos = true;
-    this.errorPedidos = '';
-    this.pedidosService.obtenerPedidos().subscribe({
-      next: (data) => {
-        this.pedidos = data;
-        this.cargandoPedidos = false;
-      },
-      error: (error) => {
-        console.error(error);
-        this.errorPedidos = 'No fue posible consultar pedidos';
-        this.cargandoPedidos = false;
-      },
-    });
+  cambiarSeccion(
+    seccion: 'pedidos' | 'inventario'
+  ): void {
+    this.seccionActiva = seccion;
   }
 }

@@ -5,17 +5,17 @@ import { Amplify } from 'aws-amplify';
 import { appEnv } from './app/app.env';
 
 // Paso 14 de la guia: Amplify se configura ANTES de bootstrapApplication.
-// Los valores salen de app.env.ts (el unico archivo que deberias editar
-// con tus identificadores reales de Cognito).
+// Los valores salen de app.env.ts (el unico archivo que se deberia editar
+// con los identificadores reales de Cognito).
 Amplify.configure({
   Auth: {
     Cognito: {
       userPoolId: appEnv.userPoolId,
       userPoolClientId: appEnv.userPoolClientId,
       loginWith: {
-        oauth: {
+        oauth: { 
           domain: appEnv.cognitoDomain,
-          scopes: ['email', 'openid', 'profile', appEnv.customScope],
+          scopes: ['email', 'openid', 'profile', ...appEnv.customScopes],
           redirectSignIn: [appEnv.redirectUrl],
           redirectSignOut: [appEnv.redirectUrl],
           responseType: 'code',
